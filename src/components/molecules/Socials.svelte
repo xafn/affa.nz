@@ -22,7 +22,7 @@
 		<DiscordIcon color="var(--accent)" />
 	</Social>
 
-	<Social tip="hey@afn.im" link="mailto:hey@afn.im">
+	<Social tip="hi@affa.nz" link="mailto:hi@affa.nz">
 		<MailIcon color="var(--accent)" />
 	</Social>
 
