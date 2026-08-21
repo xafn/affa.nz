@@ -6,19 +6,31 @@
 	import { GitForkIcon } from '@indaco/svelte-iconoir/git-fork';
 	import { OpenNewWindowIcon } from '@indaco/svelte-iconoir/open-new-window';
 
-	let repos: Repo[];
+	type RepoCard = Repo & { link: string };
+
+	let repos: RepoCard[] | null = null;
 
 	onMount(async () => {
-		const response = await fetch('https://gh-pinned-repos-tsj7ta5xfhep.deno.dev/?username=xafn');
-		let unpatched = await response.json();
-		// patch repo owners having a slash at the end of them
-		for (let i = 0; i < unpatched.length; i++) {
-			const element = unpatched[i];
-			if ((element.owner as string).endsWith('/')) {
-				unpatched[i].owner = unpatched[i].owner.slice(0, -1);
+		try {
+			const response = await fetch('https://pinned.berrysauce.dev/get/xafn');
+			if (!response.ok) {
+				repos = [];
+				return;
 			}
+
+			const pinnedRepos: Repo[] = await response.json();
+			repos = pinnedRepos.map((repo) => {
+				const author = repo.author.replace(/\/$/, '');
+
+				return {
+					...repo,
+					author,
+					link: `https://github.com/${author}/${repo.name}`
+				};
+			});
+		} catch {
+			repos = [];
 		}
-		repos = unpatched;
 	});
 </script>
 
@@ -28,24 +40,24 @@
 	</div>
 	<div class="grid">
 		{#if repos}
-			{#each repos as { link, owner, repo, description, languageColor, language, stars, forks }}
+			{#each repos as { link, author, name, description, languageColor, language, stars, forks }}
 				<a href={link} target="_blank" rel="noreferrer">
 					<div class="repo-card">
 						<div id="top-part">
 							<div class="info">
 								<img
-									src="https://github.com/{owner}.png"
-									alt="{owner}'s profile picture"
+									src="https://github.com/{author}.png"
+									alt="{author}'s profile picture"
 									id="pfp"
 								/>
-								<h6>{owner}</h6>
+								<h6>{author}</h6>
 							</div>
 							<div id="open">
 								<OpenNewWindowIcon color="var(--text-secondary)" size="20px" />
 							</div>
 						</div>
 						<div>
-							<h3>{repo}</h3>
+							<h3>{name}</h3>
 							<h6>{description}</h6>
 						</div>
 						<div class="info-container">
@@ -54,16 +66,12 @@
 								<h6>{language}</h6>
 							</div>
 							<div class="info">
-								{#if stars}
-									<StarIcon color="var(--text-secondary)" size="16px" />
-									<h6>{stars}</h6>
-								{/if}
+								<StarIcon color="var(--text-secondary)" size="16px" />
+								<h6>{stars}</h6>
 							</div>
 							<div class="info">
-								{#if forks}
-									<GitForkIcon color="var(--text-secondary)" size="16px" />
-									<h6>{forks}</h6>
-								{/if}
+								<GitForkIcon color="var(--text-secondary)" size="16px" />
+								<h6>{forks}</h6>
 							</div>
 						</div>
 					</div>
@@ -98,7 +106,9 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.25rem;
-		transition: transform 0.3s var(--bezier-one), box-shadow 0.3s var(--bezier-one);
+		transition:
+			transform 0.3s var(--bezier-one),
+			box-shadow 0.3s var(--bezier-one);
 		justify-content: space-between;
 		backdrop-filter: blur(5px);
 		-webkit-backdrop-filter: blur(5px);

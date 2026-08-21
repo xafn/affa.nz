@@ -3,9 +3,6 @@
 	import type { SignaturePayload, SignaturePoint, SignatureStroke } from '../../util/types';
 	import { fly } from 'svelte/transition';
 	import { cubicOut, quintOut } from 'svelte/easing';
-	import { UndoActionIcon } from '@indaco/svelte-iconoir/undo-action';
-	import { RedoActionIcon } from '@indaco/svelte-iconoir/redo-action';
-	import { TrashIcon } from '@indaco/svelte-iconoir/trash';
 	import { SIGNATURE_MESSAGE_MAX, SIGNATURE_NAME_MAX } from '../../util/constants';
 
 	export let open = false;
@@ -229,7 +226,9 @@
 		>
 			<header class="modal-head">
 				<h3>Add your signature</h3>
-				<button type="button" class="close" on:click={close} aria-label="Close">×</button>
+				<button type="button" class="close" on:click={close} aria-label="Close">
+					<span class="material-symbols-outlined" aria-hidden="true">close</span>
+				</button>
 			</header>
 			<p class="modal-subtext">
 				Add your name and signature, and a short message if you want! Keep things proper, I can
@@ -279,39 +278,39 @@
 					on:pointerleave={endStroke}
 					on:pointercancel={endStroke}
 				/>
-			</div>
 
-			<div class="tools">
-				<button
-					type="button"
-					class="icon-btn"
-					on:click={undoStroke}
-					disabled={!strokes.length}
-					aria-label="Undo"
-					title="Undo"
-				>
-					<UndoActionIcon color="currentColor" aria-hidden="true" />
-				</button>
-				<button
-					type="button"
-					class="icon-btn"
-					on:click={redoStroke}
-					disabled={!redoStack.length}
-					aria-label="Redo"
-					title="Redo"
-				>
-					<RedoActionIcon color="currentColor" aria-hidden="true" />
-				</button>
-				<button
-					type="button"
-					class="icon-btn"
-					on:click={clearCanvas}
-					disabled={!strokes.length}
-					aria-label="Clear signature"
-					title="Clear"
-				>
-					<TrashIcon color="currentColor" aria-hidden="true" />
-				</button>
+				<div class="tools" aria-label="Canvas actions">
+					<button
+						type="button"
+						class="icon-btn"
+						on:click={undoStroke}
+						disabled={!strokes.length}
+						aria-label="Undo"
+						title="Undo"
+					>
+						<span class="material-symbols-outlined" aria-hidden="true">undo</span>
+					</button>
+					<button
+						type="button"
+						class="icon-btn"
+						on:click={redoStroke}
+						disabled={!redoStack.length}
+						aria-label="Redo"
+						title="Redo"
+					>
+						<span class="material-symbols-outlined" aria-hidden="true">redo</span>
+					</button>
+					<button
+						type="button"
+						class="icon-btn"
+						on:click={clearCanvas}
+						disabled={!strokes.length}
+						aria-label="Clear signature"
+						title="Clear"
+					>
+						<span class="material-symbols-outlined" aria-hidden="true">delete</span>
+					</button>
+				</div>
 			</div>
 
 			{#if errorMessage}
@@ -329,6 +328,8 @@
 {/if}
 
 <style lang="scss">
+	@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
+
 	.modal-backdrop {
 		background-blend-mode: overlay;
 		display: flex;
@@ -376,9 +377,10 @@
 	.modal-head {
 		display: flex;
 		justify-content: space-between;
-		align-items: flex-start;
-		padding-bottom: 0.7rem;
+		align-items: center;
+		padding: 0.1rem 0 1.15rem;
 		border-bottom: 1px solid var(--elevation-four);
+		gap: 1rem;
 
 		h3 {
 			line-height: 1;
@@ -414,10 +416,11 @@
 	.field-grid {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: 0.75rem;
+		gap: 1rem;
+		margin-bottom: 0.35rem;
 
 		@media (max-width: 768px) {
-			gap: 0.45rem;
+			gap: 0.8rem;
 		}
 
 		@media (min-width: 700px) {
@@ -429,29 +432,42 @@
 				grid-column: span 2;
 			}
 		}
+
+		label + label {
+			margin-top: 0.1rem;
+		}
 	}
 
 	.close {
-		font-size: 1.2rem;
+		font-family: 'Material Symbols Outlined';
+		font-size: 2.1rem;
 		line-height: 1;
-		width: 2rem;
-		height: 2rem;
-		border-radius: 8px;
-		border: 1px solid var(--elevation-four);
-		background: var(--elevation-one);
+		font-variation-settings:
+			'FILL' 0,
+			'wght' 400,
+			'GRAD' 0,
+			'opsz' 24;
+		padding: 0;
+		border: 0;
+		background: transparent;
 		color: var(--text-primary);
 		cursor: pointer;
-		transition: 0.2s var(--bezier-one);
+		transition:
+			color 0.2s var(--bezier-one),
+			transform 0.2s var(--bezier-one);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		margin-top: -0.18rem;
 
 		&:hover {
-			background: var(--accent);
-			color: var(--bg-color);
+			color: var(--accent);
+			transform: scale(1.05);
 		}
 
 		@media (max-width: 768px) {
-			width: 1.7rem;
-			height: 1.7rem;
-			font-size: 1rem;
+			font-size: 1.75rem;
+			margin-top: -0.1rem;
 		}
 	}
 
@@ -473,8 +489,8 @@
 		h6 {
 			font-size: 0.78rem;
 			font-family: var(--font-two);
-			text-transform: uppercase;
-			letter-spacing: 0.02em;
+			text-transform: none;
+			letter-spacing: 0;
 			margin: 0;
 			padding: 0;
 			background: transparent;
@@ -521,59 +537,104 @@
 	.tools {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.45rem;
+		justify-content: flex-end;
+		gap: 0.5rem;
+		position: absolute;
+		right: 0.75rem;
+		bottom: 0.75rem;
+		padding: 0.45rem 0.65rem;
+		border-radius: 14px;
+		background: color-mix(in srgb, var(--bg-color) 92%, transparent);
+		border: 1px solid var(--elevation-four);
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+		z-index: 2;
 
 		@media (max-width: 768px) {
-			gap: 0.3rem;
+			right: 0.5rem;
+			bottom: 0.5rem;
+			padding: 0.34rem 0.5rem;
+			gap: 0.38rem;
 		}
 
 		button {
-			width: 2.1rem;
-			height: 2.1rem;
+			width: auto;
+			height: auto;
 			padding: 0;
-			display: inline-grid;
-			place-items: center;
-			border-radius: 10px;
-			border: 1px solid var(--elevation-four);
-			background: var(--elevation-one);
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			border: 0;
+			background: transparent;
 			color: var(--text-primary);
 			cursor: pointer;
+			line-height: 1;
+			border-radius: 0;
+			transition:
+				color 0.2s var(--bezier-one),
+				opacity 0.2s var(--bezier-one);
 
 			&:hover:not(:disabled) {
-				filter: brightness(1.08);
+				color: var(--accent);
 			}
 
 			&:disabled {
-				opacity: 0.45;
+				opacity: 0.25;
 				cursor: not-allowed;
 			}
 
+			span {
+				font-family: 'Material Symbols Outlined';
+				font-size: 1.35rem;
+				font-variation-settings:
+					'FILL' 0,
+					'wght' 400,
+					'GRAD' 0,
+					'opsz' 24;
+				line-height: 1;
+			}
+
 			@media (max-width: 768px) {
-				width: 1.8rem;
-				height: 1.8rem;
-				border-radius: 8px;
+				span {
+					font-size: 1.15rem;
+				}
 			}
 		}
 	}
 
 	.canvas-wrap {
+		position: relative;
+		margin-top: 0.2rem;
 		border-radius: 12px;
 		border: 1px solid var(--elevation-four);
-		background:
-			linear-gradient(to right, var(--elevation-four) 1px, transparent 1px),
-			linear-gradient(to bottom, var(--elevation-four) 1px, transparent 1px), var(--elevation-one);
-		background-size: 22px 22px;
+		background: var(--elevation-one);
 		overflow: hidden;
+		aspect-ratio: 520 / 280;
+
+		&::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background-image:
+				linear-gradient(to right, var(--elevation-four) 1px, transparent 1px),
+				linear-gradient(to bottom, var(--elevation-four) 1px, transparent 1px);
+			background-size: 22px 22px;
+			opacity: 0.42;
+			pointer-events: none;
+		}
 
 		canvas {
+			position: relative;
+			z-index: 1;
 			display: block;
 			width: 100%;
-			min-height: 220px;
+			height: 100%;
 			touch-action: none;
 			cursor: crosshair;
 
 			@media (max-width: 768px) {
-				min-height: 155px;
+				height: 100%;
 			}
 		}
 	}
