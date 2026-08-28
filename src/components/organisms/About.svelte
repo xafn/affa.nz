@@ -28,7 +28,7 @@
 			> year old studying CS at the <Tooltip tip="i am balding here"
 				><a href="https://cs.uwaterloo.ca/" target="_blank"><span>University of Waterloo</span></a
 				></Tooltip
-			>. I'm previously worked at <Tooltip tip="i made the site btw"
+			>. I previously worked at <Tooltip tip="i made the site btw"
 				><a href="https://tempo.new" target="_blank"><span>Tempo (YC S23)</span></a></Tooltip
 			> as a design engineer. While my background is now in software, I have a strong love for product, <Tooltip
 				tip="like this!"><span>interaction</span></Tooltip
