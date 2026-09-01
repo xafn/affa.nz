@@ -224,98 +224,100 @@
 			in:fly={{ y: 50, easing: quintOut, duration: 750 }}
 			out:fly={{ y: 50, easing: cubicOut, duration: 300 }}
 		>
-			<header class="modal-head">
-				<h3>Add your signature</h3>
-				<button type="button" class="close" on:click={close} aria-label="Close">
-					<span class="material-symbols-outlined" aria-hidden="true">close</span>
-				</button>
-			</header>
-			<p class="modal-subtext">
-				Add your name and signature, and a short message if you want! Keep things proper, I can
-				remove anything for any reason. Thank you!
-			</p>
-			{#if signedInEmail}
-				<p class="modal-account">Signed in as {signedInEmail}</p>
-			{/if}
-
-			<div class="field-grid">
-				<label>
-					<div class="label-row">
-						<h6>Name *</h6>
-						<span class="char-count" aria-live="polite">{nameCount}/{NAME_MAX}</span>
-					</div>
-					<input
-						type="text"
-						maxlength={NAME_MAX}
-						placeholder="afn zmn"
-						bind:value={signatureName}
-						required
-					/>
-				</label>
-
-				<label>
-					<div class="label-row">
-						<h6>Message</h6>
-						<span class="char-count" aria-live="polite">{messageCount}/{MESSAGE_MAX}</span>
-					</div>
-					<textarea
-						rows="2"
-						maxlength={MESSAGE_MAX}
-						placeholder="you're so cool and hot affan"
-						bind:value={signatureMessage}
-					/>
-				</label>
-			</div>
-
-			<div class="canvas-wrap">
-				<canvas
-					bind:this={canvasEl}
-					width={CANVAS_WIDTH}
-					height={CANVAS_HEIGHT}
-					on:pointerdown={startStroke}
-					on:pointermove={continueStroke}
-					on:pointerup={endStroke}
-					on:pointerleave={endStroke}
-					on:pointercancel={endStroke}
-				/>
-
-				<div class="tools" aria-label="Canvas actions">
-					<button
-						type="button"
-						class="icon-btn"
-						on:click={undoStroke}
-						disabled={!strokes.length}
-						aria-label="Undo"
-						title="Undo"
-					>
-						<span class="material-symbols-outlined" aria-hidden="true">undo</span>
+			<div class="modal-scroll">
+				<header class="modal-head">
+					<h3>Add your signature</h3>
+					<button type="button" class="close" on:click={close} aria-label="Close">
+						<span class="material-symbols-outlined" aria-hidden="true">close</span>
 					</button>
-					<button
-						type="button"
-						class="icon-btn"
-						on:click={redoStroke}
-						disabled={!redoStack.length}
-						aria-label="Redo"
-						title="Redo"
-					>
-						<span class="material-symbols-outlined" aria-hidden="true">redo</span>
-					</button>
-					<button
-						type="button"
-						class="icon-btn"
-						on:click={clearCanvas}
-						disabled={!strokes.length}
-						aria-label="Clear signature"
-						title="Clear"
-					>
-						<span class="material-symbols-outlined" aria-hidden="true">delete</span>
-					</button>
+				</header>
+				<p class="modal-subtext">
+					Add your name and signature, and a short message if you want! Keep things proper, I can
+					remove anything for any reason. Thank you!
+				</p>
+				{#if signedInEmail}
+					<p class="modal-account">Signed in as {signedInEmail}</p>
+				{/if}
+
+				<div class="field-grid">
+					<label>
+						<div class="label-row">
+							<h6>Name *</h6>
+							<span class="char-count" aria-live="polite">{nameCount}/{NAME_MAX}</span>
+						</div>
+						<input
+							type="text"
+							maxlength={NAME_MAX}
+							placeholder="afn zmn"
+							bind:value={signatureName}
+							required
+						/>
+					</label>
+
+					<label>
+						<div class="label-row">
+							<h6>Message</h6>
+							<span class="char-count" aria-live="polite">{messageCount}/{MESSAGE_MAX}</span>
+						</div>
+						<textarea
+							rows="2"
+							maxlength={MESSAGE_MAX}
+							placeholder="you're so cool and hot affan"
+							bind:value={signatureMessage}
+						/>
+					</label>
 				</div>
-			</div>
 
-			{#if errorMessage}
-				<p class="error">{errorMessage}</p>
-			{/if}
+				<div class="canvas-wrap">
+					<canvas
+						bind:this={canvasEl}
+						width={CANVAS_WIDTH}
+						height={CANVAS_HEIGHT}
+						on:pointerdown={startStroke}
+						on:pointermove={continueStroke}
+						on:pointerup={endStroke}
+						on:pointerleave={endStroke}
+						on:pointercancel={endStroke}
+					/>
+
+					<div class="tools" aria-label="Canvas actions">
+						<button
+							type="button"
+							class="icon-btn"
+							on:click={undoStroke}
+							disabled={!strokes.length}
+							aria-label="Undo"
+							title="Undo"
+						>
+							<span class="material-symbols-outlined" aria-hidden="true">undo</span>
+						</button>
+						<button
+							type="button"
+							class="icon-btn"
+							on:click={redoStroke}
+							disabled={!redoStack.length}
+							aria-label="Redo"
+							title="Redo"
+						>
+							<span class="material-symbols-outlined" aria-hidden="true">redo</span>
+						</button>
+						<button
+							type="button"
+							class="icon-btn"
+							on:click={clearCanvas}
+							disabled={!strokes.length}
+							aria-label="Clear signature"
+							title="Clear"
+						>
+							<span class="material-symbols-outlined" aria-hidden="true">delete</span>
+						</button>
+					</div>
+				</div>
+
+				{#if errorMessage}
+					<p class="error">{errorMessage}</p>
+				{/if}
+			</div>
 
 			<div class="modal-actions">
 				<button type="button" class="ghost" on:click={close}>Cancel</button>
@@ -337,11 +339,11 @@
 		justify-content: center;
 		align-items: center;
 		position: fixed;
-		left: 0;
-		top: 50%;
-		transform: translateY(-50%);
-		height: 200vh;
+		inset: 0;
+		min-height: 100dvh;
 		width: 100vw;
+		padding: 1rem;
+		overflow-y: auto;
 		z-index: 20;
 		cursor: pointer;
 		user-select: none;
@@ -350,36 +352,47 @@
 		-webkit-backdrop-filter: blur(12px);
 
 		@media (max-width: 768px) {
-			padding: 0.4rem;
+			padding: 0.55rem;
 		}
 	}
 
 	.modal {
-		width: min(580px, 100%);
-		max-height: 95vh;
-		overflow: auto;
+		width: min(580px, calc(100vw - 2rem));
+		max-height: calc(100dvh - 2rem);
+		overflow: hidden;
 		padding: 1.3rem;
 		border-radius: 20px;
 		border: 1px solid var(--elevation-four);
 		background-color: var(--bg-color);
-		display: grid;
-		gap: 1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.85rem;
 		box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+		cursor: default;
 
 		@media (max-width: 768px) {
-			width: min(85%, 440px);
+			width: min(100%, 440px);
 			padding: 0.8rem;
 			border-radius: 14px;
-			gap: 0.65rem;
+			gap: 0.7rem;
 		}
+	}
+
+	.modal-scroll {
+		flex: 1 1 auto;
+		display: grid;
+		gap: 0.7rem;
+		overflow: auto;
+		padding-right: 0.15rem;
+		padding-bottom: 0.1rem;
+		min-height: 0;
 	}
 
 	.modal-head {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 0.1rem 0 1.15rem;
-		border-bottom: 1px solid var(--elevation-four);
+		padding: 0.1rem 0 0.5rem;
 		gap: 1rem;
 
 		h3 {
@@ -404,6 +417,14 @@
 			font-size: 0.76rem;
 			line-height: 1.25;
 		}
+	}
+
+	.error {
+		display: block;
+		position: static;
+		margin: 0.7rem 0 0;
+		overflow-wrap: anywhere;
+		word-break: break-word;
 	}
 
 	.modal-account {
@@ -642,10 +663,20 @@
 	.modal-actions {
 		display: flex;
 		justify-content: flex-end;
-		gap: 0.6rem;
+		gap: 0.45rem;
+		padding-top: 0.25rem;
+		flex-shrink: 0;
+		position: sticky;
+		bottom: 0;
+		background: linear-gradient(
+			to top,
+			var(--bg-color) 82%,
+			color-mix(in srgb, var(--bg-color) 0%, transparent)
+		);
 
 		@media (max-width: 768px) {
 			gap: 0.4rem;
+			padding-top: 0.6rem;
 		}
 
 		button {
@@ -654,10 +685,23 @@
 			border-radius: 10px;
 			border: 1px solid var(--elevation-four);
 			cursor: pointer;
+			width: fit-content;
+			white-space: nowrap;
+			flex: 0 0 auto;
 
 			@media (max-width: 768px) {
-				padding: 0.45rem 0.62rem;
-				font-size: 0.75rem;
+				padding: 0.5rem 0.7rem;
+				font-size: 0.74rem;
+			}
+		}
+
+		@media (max-width: 420px) {
+			justify-content: space-between;
+
+			button {
+				flex: 1 1 0;
+				min-width: 0;
+				padding-inline: 0.55rem;
 			}
 		}
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import { cubicOut, quintOut } from 'svelte/easing';
 	import { playSharedSFX } from '../../util/audio';
@@ -10,21 +11,45 @@
 	export let subtitle = 'Click anywhere to dismiss';
 
 	let clicked = false;
+	let removeKeydownListener: (() => void) | null = null;
+
+	function onKeyDown(e: KeyboardEvent) {
+		if (!clicked) {
+			return;
+		}
+
+		if (e.key === 'Escape') {
+			e.preventDefault();
+			closeArtwork();
+		}
+	}
+
+	function addKeydownListener() {
+		if (typeof window === 'undefined' || removeKeydownListener) {
+			return;
+		}
+
+		window.addEventListener('keydown', onKeyDown);
+		removeKeydownListener = () => {
+			window.removeEventListener('keydown', onKeyDown);
+			removeKeydownListener = null;
+		};
+	}
+
+	function removeKeydownListenerNow() {
+		removeKeydownListener?.();
+	}
 
 	function openArtwork() {
 		clicked = true;
-		void playSharedSFX('/sounds/paper.mp3');
+		addKeydownListener();
+		void playSharedSFX('/sounds/paper.mp3', 0.25);
 	}
 
 	function closeArtwork() {
 		clicked = false;
-		void playSharedSFX('/sounds/crumple.mp3');
-	}
-
-	function onKeyDown(e: KeyboardEvent) {
-		if (e.key === 'Escape') {
-			closeArtwork();
-		}
+		removeKeydownListenerNow();
+		void playSharedSFX('/sounds/crumple.mp3', 0.15);
 	}
 
 	function disableRightClick(event: { preventDefault: () => void }) {
@@ -32,6 +57,10 @@
 			event.preventDefault();
 		}
 	}
+
+	onDestroy(() => {
+		removeKeydownListenerNow();
+	});
 </script>
 
 <button
@@ -42,8 +71,6 @@
 	on:click|stopPropagation={openArtwork}
 	on:keypress|stopPropagation={openArtwork}
 />
-
-<svelte:window on:keydown={onKeyDown} />
 
 <svelte:head>
 	{#if clicked}
