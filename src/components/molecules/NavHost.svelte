@@ -18,7 +18,7 @@
 					/></svg
 				>
 			</Nav>
-			<Nav href="#projects" section="projects" isSelected={y > 350 && y < 675}>
+			<Nav href="#projects" section="work" isSelected={y > 350 && y < 675}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					height="24px"

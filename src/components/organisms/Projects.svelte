@@ -11,10 +11,20 @@
 
 	const projects: Project[] = [
 		{
+			name: 'Tempo (YC S23)',
+			url: 'https://tempo.new',
+			description:
+				'Designed and implemented the Tempo landing page myself, worked on product features for the Electron app, and helped solidify the Tempo design system.',
+			videoSrc:
+				'https://player.vimeo.com/video/1223916040?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479&background=1&autoplay=1&loop=1&muted=1&controls=0&dnt=1',
+			videoTitle: 'Tempo (YC S23)',
+			label: 'Design Engineer S26'
+		},
+		{
 			name: 'Amperon',
 			url: 'https://devpost.com/software/circuito',
 			description:
-				'Cursor for circuit design. Built a web app that lets users prompt and generate fully validated circuits. Work live with teams, create BOMs, and shop for components. Applied to Y Combinator and got in the top 10% of applicants (take us please).',
+				'Built a web app that lets users prompt and generate validated circuits, collaborate with teams, create BOMs, and shop for components. Made it into the top 10% of Y Combinator applicants.',
 			label: 'Won $1000 and 1st at NexHacks @ CMU',
 			image: '/default.webp',
 			videoSrc:
@@ -43,20 +53,12 @@
 				'https://player.vimeo.com/video/1176040133?background=1&autoplay=1&loop=1&muted=1&autopause=0&controls=0&dnt=1',
 			videoTitle: 'Instafn'
 		},
-		{
-			name: 'ReVanced',
-			url: 'https://revanced.app/',
-			description:
-				'Led the frontend development for ReVanced, a project with over a million users, and delivered content to over 500k+ monthly visitors.',
-			image: 'revanced.png',
-			label: '500k+ monthly users'
-		}
 	];
 </script>
 
 <section class="wrapper" id="projects">
 	<div class="title">
-		<h2>projects</h2>
+		<h2>work</h2>
 	</div>
 
 	<div class="grid">
@@ -206,8 +208,11 @@
 	}
 
 	.preview-video {
+		position: absolute;
+		inset: 0;
 		width: 100%;
 		height: 100%;
+		display: block;
 		border: 0;
 		pointer-events: none;
 		user-select: none;
