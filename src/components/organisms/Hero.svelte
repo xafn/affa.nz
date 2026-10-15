@@ -17,7 +17,7 @@
 				class="char long">a</span
 			><span class="char">n</span>
 		</h1>
-		<h4>computer science at uwaterloo,<br />swe, design engineer, illustrator.</h4>
+		<h4>computer science at uwaterloo,<br />swe, designer, illustrator.</h4>
 		<div class="socials">
 			<Socials />
 		</div>

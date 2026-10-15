@@ -28,17 +28,17 @@
 			> year old studying CS at the <Tooltip tip="i am balding here"
 				><a href="https://cs.uwaterloo.ca/" target="_blank"><span>University of Waterloo</span></a
 				></Tooltip
-			>. I previously worked at <Tooltip tip="i made the site btw"
-				><a href="https://tempo.new" target="_blank"><span>Tempo (YC S23)</span></a></Tooltip
-			> as a design engineer. While my background is now in software, I have a strong love for product, <Tooltip
-				tip="like this!"><span>interaction</span></Tooltip
-			>, and design. I like to contribute to
+			>. This winter, I'm going to be working on product at <Tooltip tip="bless"
+				><a href="https://withpersona.com" target="_blank"><span>Persona</span></a></Tooltip
+			> in San Francisco. While I have a strong background in product, <Tooltip tip="like this!"
+				><span>interaction</span></Tooltip
+			>, and design, I still enjoy engineering software. I like to contribute to
 			<Tooltip tip="nerd"
 				><a href="https://github.com/xafn" target="_blank"><span>open source</span></a></Tooltip
-			> in my free time, and most notably worked frontend for <Tooltip tip="might be DMCA'd"
+			> in my free time, and most notably worked on <Tooltip tip="might be DMCA'd"
 				><a href="https://revanced.app" target="_blank"><span>ReVanced</span></a></Tooltip
 			>.
-		</p> 
+		</p>
 	</div>
 </section>
 
